@@ -3,11 +3,14 @@ import logo from './logo.svg';
 import './App.css';
 class ContactList extends React.Component {
     render () {
-        const people = [
+        //hard coded contact list
+        /*const people = [
             {name:'michael'},
             {name:'rayan'},
             {name:'joseph'}
-        ]
+        ]*/
+        //here is another way to define it:
+        const people = this.props.contacts
         return <ol>
             { people.map(person=> (
                <li key={person.name}> {person.name}</li>
@@ -18,7 +21,14 @@ class App extends Component {
     render() {
         return ( 
         <div className = "App" >
-           <ContactList />
+           <ContactList contacts={[
+               {name:'michael'},
+               {name:'rayan'},
+               {name:'joseph'}]} />
+           <ContactList contacts={[
+               {name:'jean michael'},
+               {name:'peter'},
+               {name:'parker'}]} />
         </div>
         );
     }
