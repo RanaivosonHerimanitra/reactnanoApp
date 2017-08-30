@@ -1,10 +1,45 @@
-import React , {Component} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import escapeRegExp from 'escape-string-regexp';
+import sortBy from 'sort-by'
 //map over contact in each contacts array obj
-/*class ListContacts extends Component {
+class ListContacts extends Component {
+    /* spec type of obj passed into the component **/
+    static PropTypes = {
+        contacts: PropTypes.array.isRequired,
+        onDeleteContact: PropTypes.func.isRequired
+    }
+    state = {
+        query:''
+    }
+    updateQuery =(query) => {
+        this.setState({query:query.trim()})
+    }
     render() {
-        return <ol className="contact-list">
+        let showingContacts
+        if (this.state.query)
+            {
+                const match = RegExp(escapeRegExp(this.state.query),'i')
+                showingContacts = this.props.contacts.filter( 
+                    (contact)=>match.test(contact.name) 
+                 )
+            } else {
+                showingContacts=this.props.contacts
+            }
+            /* then sort alphabetically by name **/
+            showingContacts.sort(sortBy('name'))
+        return <div className="list-contacts">
+                {JSON.stringify(this.state)}
+                <div className="list-contacts-top">
+                     <input onChange={(event)=>this.updateQuery(event.target.value)} 
+                            value={this.state.query} 
+                            className="search-contacts"
+                             type="text" placeholder="search contact..."/>
+                     
+                </div>
+            <ol className="contact-list">
             
-                  {this.props.contacts.map((contact)=>
+                  {showingContacts.map((contact)=>
                     <li key={contact.id} className="contact-list-item">
                         
                         <div className="contact-avatar" style={{
@@ -13,16 +48,17 @@ import React , {Component} from 'react';
                                <p>{contact.name}</p>
                                <p>{contact.email}</p>
                             </div>
-                            <button className="contact-remove">
+                            <button onClick={() => this.props.onDeleteContact(contact)} className="contact-remove">
                                 Remove
                             </button>
                     </li>
                    
                   )}
                </ol>
+            </div>
     }
-}**/
-/* using stateless functionnal component to achieve same output**/
+}
+/* using stateless functionnal component to achieve same output
 function ListContacts (props) {
     
         return (<ol className="contact-list">
@@ -36,7 +72,7 @@ function ListContacts (props) {
                                <p>{contact.name}</p>
                                <p>{contact.email}</p>
                             </div>
-                            <button className="contact-remove">
+                            <button onClick={() => props.onDeleteContact(contact)} className="contact-remove">
                                 Remove
                             </button>
                     </li>
@@ -45,5 +81,6 @@ function ListContacts (props) {
                </ol>)
 
      
-}
+}**/
+
 export default ListContacts
