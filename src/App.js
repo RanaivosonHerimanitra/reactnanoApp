@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-
+import CreateContact from './CreateContact'
 import ListContacts from './ListContacts';
 import logo from './logo.svg';
 import './App.css';
-
+import * as ContactsAPI from './utils/ContactsAPI'
 //class ContactList extends React.Component {
     /*render () {
         //hard coded contact list
@@ -24,31 +24,21 @@ import './App.css';
 //}
 //We pass contacts object array to ListContacts component!
 class App extends Component {
+    /* initially blank because data are fetched using special React function **/
+
     state = {
-         contacts: [
-            {
-              "id": "ryan",
-              "name": "Ryan Florence",
-              "email": "ryan@reacttraining.com",
-              "avatarURL": "http://localhost:5001/ryan.jpg"
-            },
-            {
-              "id": "michael",
-              "name": "Michael Jackson",
-              "email": "michael@reacttraining.com",
-              "avatarURL": "http://localhost:5001/michael.jpg"
-            },
-            {
-              "id": "tyler",
-              "name": "Tyler McGinnis",
-              "email": "tyler@reacttraining.com",
-              "avatarURL": "http://localhost:5001/tyler.jpg"
-            }]
+         contacts: []
     }
+    componentDidMount () {
+        ContactsAPI.getAll().then(
+            (contacts)=>{this.setState({contacts})})
+    }
+    
     removeContact = (contact) => {
         this.setState( (state) =>({
             contacts: state.contacts.filter( (c)=>c.id!==contact.id)
         }))
+        ContactsAPI.remove(contact)
     }
     render() {
         return ( 

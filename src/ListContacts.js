@@ -15,6 +15,9 @@ class ListContacts extends Component {
     updateQuery =(query) => {
         this.setState({query:query.trim()})
     }
+    clearQuery =() => {
+        this.setState({query:''})
+    }
     render() {
         /* object destructuring **/
         const {contacts,onDeleteContact} = this.props
@@ -33,7 +36,7 @@ class ListContacts extends Component {
             /* then sort alphabetically by name **/
             showingContacts.sort(sortBy('name'))
         return <div className="list-contacts">
-                {JSON.stringify(this.state)}
+                
                 <div className="list-contacts-top">
                      <input onChange={(event)=>this.updateQuery(event.target.value)} 
                             value={this.state.query} 
@@ -41,6 +44,12 @@ class ListContacts extends Component {
                              type="text" placeholder="search contact..."/>
                      
                 </div>
+                {showingContacts.length!==contacts.length && 
+                (<div className="showing-contacts">
+                    <span>Now showing contacts {showingContacts.length} of {contacts.length} </span>
+                    <button onClick={this.clearQuery} >Show all</button>
+                 </div>
+                    )}
             <ol className="contact-list">
             
                   {showingContacts.map((contact)=>
