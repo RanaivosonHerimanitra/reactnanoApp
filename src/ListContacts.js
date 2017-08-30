@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types';
 import escapeRegExp from 'escape-string-regexp';
 import sortBy from 'sort-by'
@@ -18,6 +19,7 @@ class ListContacts extends Component {
     clearQuery =() => {
         this.setState({query:''})
     }
+    
     render() {
         /* object destructuring **/
         const {contacts,onDeleteContact} = this.props
@@ -42,6 +44,8 @@ class ListContacts extends Component {
                             value={this.state.query} 
                             className="search-contacts"
                              type="text" placeholder="search contact..."/>
+                             <Link to="/create" onClick={this.props.onNavigate}
+                                   className="add-contact">Add contact</Link>
                      
                 </div>
                 {showingContacts.length!==contacts.length && 

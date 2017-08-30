@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router-dom'
 import CreateContact from './CreateContact'
 import ListContacts from './ListContacts';
+
 import logo from './logo.svg';
 import './App.css';
 import * as ContactsAPI from './utils/ContactsAPI'
@@ -27,6 +29,7 @@ class App extends Component {
     /* initially blank because data are fetched using special React function **/
 
     state = {
+         screen:'list',
          contacts: []
     }
     componentDidMount () {
@@ -42,10 +45,18 @@ class App extends Component {
     }
     render() {
         return ( 
-        <div className = "App" >
-           <ListContacts 
-              onDeleteContact={this.removeContact}
-              contacts={this.state.contacts}/>
+        <div className = "app" >
+            <Route exact path="/"  render={()=>(
+                <ListContacts onDeleteContact={this.removeContact} 
+                              contacts={this.state.contacts}
+                              onNavigate={()=>{this.setState({screen:'create' })   }}            
+                />
+               
+
+            )}
+            />
+           
+            <Route path="/create" component={CreateContact}/>
         </div>
         );
     }
